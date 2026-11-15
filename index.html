@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102a43"><title>AquaTrack | LPU Water Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">A</div><div><strong>AquaTrack</strong><small>LPU campus water availability</small></div></div>
+  <div class="live"><span class="pulse"></span><span id="connectionLabel">LOCAL DEMO</span><span id="clock">--:--:--</span></div>
+</header>
+<main class="shell">
+  <section class="intro">
+    <div><p class="eyebrow">STUDENT-POWERED CAMPUS UTILITY</p><h1>Find water. <span>Skip the guesswork.</span></h1>
+    <p class="sub">Check the latest student-reported condition of campus water points before you walk there.</p></div>
+    <div class="notice"><strong id="modeTitle">Prototype / demo mode</strong><span id="modeText">Sample reports are labelled as demo data. Your new reports are saved in this browser only.</span></div>
+  </section>
+  <section class="stats" aria-label="Water point summary">
+    <div class="stat"><span class="dot green"></span><div><strong id="availableCount">0</strong><small>Available</small></div></div>
+    <div class="stat"><span class="dot red"></span><div><strong id="unavailableCount">0</strong><small>Unavailable</small></div></div>
+    <div class="stat"><span class="dot yellow"></span><div><strong id="dirtyCount">0</strong><small>Quality concern</small></div></div>
+    <div class="stat"><span class="dot grey"></span><div><strong id="staleCount">0</strong><small>Needs update</small></div></div>
+  </section>
+  <section class="workspace">
+    <div class="map-panel">
+      <div class="panel-head"><div><p class="eyebrow">CAMPUS OVERVIEW</p><h2>Water availability map</h2></div><button id="resetView" class="soft-btn">Reset view</button></div>
+      <div class="legend"><span><i class="legend-dot green"></i>Available</span><span><i class="legend-dot red"></i>Unavailable</span><span><i class="legend-dot yellow"></i>Dirty / quality concern</span><span><i class="legend-dot grey"></i>Needs update</span></div>
+      <div id="map" role="application" aria-label="Interactive LPU campus water availability map"></div>
+      <div class="map-foot"><span>Map tiles © OpenStreetMap contributors</span><span id="mapStatus">Select a marker to inspect reports.</span></div>
+    </div>
+    <aside class="side">
+      <div class="panel-head"><div><p class="eyebrow">WATER POINTS</p><h2>Campus locations</h2></div><span class="count" id="pointCount">5 points</span></div>
+      <input id="search" class="search" type="search" placeholder="Search location..." aria-label="Search water points">
+      <div id="pointList" class="point-list"></div>
+      <div class="report-panel">
+        <p class="eyebrow">CONTRIBUTE A REPORT</p><h2>What did you find?</h2>
+        <form id="reportForm">
+          <label for="location">Water point</label><select id="location" required></select>
+          <label for="status">Observed condition</label>
+          <select id="status" required><option value="available">Available — water appears usable</option><option value="unavailable">Unavailable — no water / not working</option><option value="dirty">Dirty water / cleanliness concern</option></select>
+          <label for="note">Additional details <span class="optional">optional</span></label>
+          <textarea id="note" rows="2" maxlength="180" placeholder="e.g. tap is leaking, dispenser is switched off..."></textarea>
+          <button class="primary-btn" type="submit">Submit water report <span>→</span></button>
+          <p id="formMessage" class="form-message" aria-live="polite">Select a location and report what you observe.</p>
+        </form>
+      </div>
+    </aside>
+  </section>
+  <section class="bottom-grid">
+    <div class="info-card"><span class="info-icon">◷</span><div><strong>Device-local time</strong><p>Times display in this device's timezone: <b id="timezone">detecting…</b>. The clock uses your device. Shared mode uses server-recorded report times.</p></div></div>
+    <div class="info-card"><span class="info-icon">↻</span><div><strong>Simple status rule</strong><p>The newest report from the last 2 hours sets the marker colour. Older points turn grey until someone reports again.</p></div></div>
+    <div class="info-card"><span class="info-icon">⚑</span><div><strong>Safety note</strong><p>Green means recently reported as available, not laboratory-tested safe. Do not drink water that looks or smells unsafe.</p></div></div>
+  </section>
+  <footer>Independent student prototype · Not an official LPU service · Campus pins are reference areas and must be verified on site</footer>
+</main>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><button id="closeModal" class="close" aria-label="Close">×</button><p class="eyebrow">WATER POINT DETAILS</p><h2 id="modalTitle">Location</h2><div id="modalBody"></div><button id="reportThis" class="primary-btn">Report this water point →</button></div></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Optional shared mode: fill firebase-config.js and enable Anonymous Authentication + Firestore. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+</body></html>
